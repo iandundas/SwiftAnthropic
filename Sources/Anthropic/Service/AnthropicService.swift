@@ -127,7 +127,7 @@ extension AnthropicService {
          var errorMessage = "status code \(httpResponse.statusCode)"
          do {
             let errorResponse = try decoder.decode(ErrorResponse.self, from: data)
-            errorMessage += errorResponse.error.message
+            errorMessage += ": " + errorResponse.error.message
          } catch {
             // If decoding fails, proceed with a general error message
             errorMessage = "status code \(httpResponse.statusCode)"
@@ -183,7 +183,7 @@ extension AnthropicService {
                data.append(byte)
             }
             let errorResponse = try decoder.decode(ErrorResponse.self, from: data)
-            errorMessage += errorResponse.error.message
+            errorMessage += ": " + errorResponse.error.message
          } catch {
             // If decoding fails, proceed with a general error message
             errorMessage = "status code \(httpResponse.statusCode)"
