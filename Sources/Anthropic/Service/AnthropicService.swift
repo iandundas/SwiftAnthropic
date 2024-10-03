@@ -9,27 +9,37 @@ import Foundation
 
 // MARK: Error
 
-public enum APIError: Error {
-   
-   case requestFailed(description: String)
-   case responseUnsuccessful(description: String)
-   case invalidData
-   case jsonDecodingFailure(description: String)
-   case dataCouldNotBeReadMissingData(description: String)
-   case bothDecodingStrategiesFailed
-   case timeOutError
-   
-   public var displayDescription: String {
-      switch self {
-      case .requestFailed(let description): return description
-      case .responseUnsuccessful(let description): return description
-      case .invalidData: return "Invalid data"
-      case .jsonDecodingFailure(let description): return description
-      case .dataCouldNotBeReadMissingData(let description): return description
-      case .bothDecodingStrategiesFailed: return "Decoding strategies failed."
-      case .timeOutError: return "Time Out Error."
-      }
-   }
+public enum APIError: Error, LocalizedError {
+
+    case requestFailed(description: String)
+    case responseUnsuccessful(description: String)
+    case invalidData
+    case jsonDecodingFailure(description: String)
+    case dataCouldNotBeReadMissingData(description: String)
+    case bothDecodingStrategiesFailed
+    case timeOutError
+
+    public var errorDescription: String? {
+        displayDescription
+    }
+
+    public var displayDescription: String {
+        switch self {
+        case .requestFailed(let description):
+            return "Request failed: \(description)"
+        case .responseUnsuccessful(let description):
+            return "Response unsuccessful: \(description)"
+        case .invalidData:
+            return "Invalid data received"
+        case .jsonDecodingFailure(let description):
+            return "JSON decoding failed: \(description)"
+        case .dataCouldNotBeReadMissingData(let description):
+            return "Data could not be read (missing data): \(description)"
+        case .bothDecodingStrategiesFailed:
+            return "Both decoding strategies failed"
+        case .timeOutError:
+            return "Request timed out"
+    }
 }
 
 // MARK: Service
