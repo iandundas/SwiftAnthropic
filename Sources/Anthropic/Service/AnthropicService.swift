@@ -10,7 +10,7 @@ import Foundation
 // MARK: Error
 
 public enum APIError: Error, LocalizedError {
-
+    
     case requestFailed(description: String)
     case responseUnsuccessful(description: String)
     case invalidData
@@ -18,11 +18,11 @@ public enum APIError: Error, LocalizedError {
     case dataCouldNotBeReadMissingData(description: String)
     case bothDecodingStrategiesFailed
     case timeOutError
-
+    
     public var errorDescription: String? {
         displayDescription
     }
-
+    
     public var displayDescription: String {
         switch self {
         case .requestFailed(let description):
@@ -39,6 +39,7 @@ public enum APIError: Error, LocalizedError {
             return "Both decoding strategies failed"
         case .timeOutError:
             return "Request timed out"
+        }
     }
 }
 
