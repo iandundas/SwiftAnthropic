@@ -15,19 +15,16 @@ let package = Package(
             name: "SwiftAnthropic",
             targets: ["SwiftAnthropic"]),
     ],
-    dependencies: [
-        .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.25.2"),
-        .package(url: "https://github.com/apple/swift-nio.git", from: "2.81.0"),
-    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
+        // AsyncHTTPClient and NIOFoundationCompat back `AsyncHTTPClientAdapter`, which is
+        // `#if os(Linux)` in its entirety. SPM resolves package dependencies for every
+        // platform even when the target dependency is `.when(platforms: [.linux])`, so
+        // declaring them would add 19 transitive packages to an Apple-only consumer's
+        // graph. Restore both if this fork ever needs to build for Linux.
         .target(
             name: "SwiftAnthropic",
-            dependencies: [
-                .product(name: "AsyncHTTPClient", package: "async-http-client", condition: .when(platforms: [.linux])),
-                .product(name: "NIOFoundationCompat", package: "swift-nio", condition: .when(platforms: [.linux])),
-            ],
             path: "Sources/Anthropic"),
         .testTarget(
             name: "SwiftAnthropicTests",
