@@ -12,8 +12,8 @@ import FoundationNetworking
 
 // MARK: Error
 
-public enum APIError: Error {
-  
+public enum APIError: Error, LocalizedError {
+
   case requestFailed(description: String)
   case responseUnsuccessful(description: String)
   case invalidData
@@ -21,7 +21,14 @@ public enum APIError: Error {
   case dataCouldNotBeReadMissingData(description: String)
   case bothDecodingStrategiesFailed
   case timeOutError
-  
+
+  /// `LocalizedError` conformance routes `displayDescription` through
+  /// `localizedDescription`, so callers that surface a generic `Error` to the
+  /// user get the API's message instead of the enum's default description.
+  public var errorDescription: String? {
+    displayDescription
+  }
+
   public var displayDescription: String {
     switch self {
     case .requestFailed(let description): return description
